@@ -131,15 +131,27 @@ function initDBTables($pdo, $driver) {
                 nombre VARCHAR(255) UNIQUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
-            CREATE TABLE IF NOT EXISTS inscripciones (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                dni VARCHAR(20),
-                curso VARCHAR(255),
-                fecha DATE,
-                cc DECIMAL(5,2),
-                mp DECIMAL(5,2),
-                UNIQUE(dni, curso, fecha)
-            );
+        CREATE TABLE IF NOT EXISTS inscripciones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            dni VARCHAR(20),
+            curso VARCHAR(255),
+            fecha DATE,
+            cc DECIMAL(5,2),
+            mp DECIMAL(5,2),
+            UNIQUE(dni, curso, fecha)
+        );
+        CREATE TABLE IF NOT EXISTS proveedores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            ruc VARCHAR(20),
+            nombre VARCHAR(255),
+            razon_social VARCHAR(255),
+            linea VARCHAR(255),
+            curso VARCHAR(255),
+            fecha DATE,
+            tiempos DECIMAL(5,2),
+            nota DECIMAL(5,2),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
         ");
         $check = $pdo->query("SELECT COUNT(*) FROM config")->fetchColumn();
         if ($check == 0) {

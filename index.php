@@ -10,6 +10,8 @@ $stats['perfiles'] = $pdo->query("SELECT COUNT(*) FROM perfiles")->fetchColumn()
 $stats['cursos_activos'] = $pdo->query("SELECT COUNT(DISTINCT curso) FROM asistencias")->fetchColumn();
 $stats['promedio'] = $pdo->query("SELECT AVG(nota) FROM asistencias")->fetchColumn();
 $stats['inscripciones_hoy'] = $pdo->query("SELECT COUNT(*) FROM inscripciones WHERE fecha = '" . date('Y-m-d') . "'")->fetchColumn();
+$stats['proveedores'] = $pdo->query("SELECT COUNT(*) FROM proveedores")->fetchColumn();
+$stats['promedio_proveedores'] = $pdo->query("SELECT AVG(nota) FROM proveedores")->fetchColumn();
 
 $cursos_data = $pdo->query("SELECT curso, COUNT(*) as total, AVG(nota) as promedio FROM asistencias GROUP BY curso ORDER BY total DESC LIMIT 10")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -43,6 +45,14 @@ $notas_dist = $pdo->query("SELECT
     <div class="stat-card">
         <div class="number"><?php echo $stats['inscripciones_hoy']; ?></div>
         <div class="label">Inscripciones Hoy</div>
+    </div>
+    <div class="stat-card">
+        <div class="number"><?php echo $stats['proveedores']; ?></div>
+        <div class="label">Proveedores</div>
+    </div>
+    <div class="stat-card">
+        <div class="number"><?php echo number_format($stats['promedio_proveedores'], 1); ?></div>
+        <div class="label">Promedio Proveedores</div>
     </div>
 </div>
 
