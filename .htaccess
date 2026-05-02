@@ -1,0 +1,23 @@
+# Protección de archivos
+<Files "config_db.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "functions.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+<Files "SimpleXLSX.php">
+    Order Allow,Deny
+    Deny from all
+</Files>
+
+# Prevenir acceso a carpetas
+Options -Indexes
+
+# PHP settings
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 300
