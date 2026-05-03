@@ -51,7 +51,7 @@
 <body>
     <div class="header">
         <div class="logo">
-            <img src="<?php echo getConfig('logo') ?: 'assets/logo.png'; ?>" alt="Logo">
+            <img src="<?php echo getConfig('logo') ?: 'assets/logo.svg'; ?>" alt="Logo">
             <h1>Sistema de Asistencia</h1>
         </div>
         <nav>
