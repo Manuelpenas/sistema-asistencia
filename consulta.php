@@ -1,5 +1,7 @@
 <?php
 require_once 'functions.php';
+// checkAuth(); // Comentado: acceso público
+
 $page_title = 'Consulta';
 
 $pdo = getDB();

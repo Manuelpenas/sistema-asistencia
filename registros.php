@@ -1,6 +1,6 @@
 <?php
 require_once 'functions.php';
-checkAuth();
+// checkAuth(); // Comentado: acceso público
 
 $page_title = 'Registros';
 $pdo = getDB();
