@@ -121,8 +121,8 @@ if ($curso_sel) {
                             <td><input type="checkbox" name="asistentes[]" value="<?php echo htmlspecialchars($ins['dni']); ?>"></td>
                             <td><?php echo htmlspecialchars($ins['dni']); ?></td>
                             <td><?php echo htmlspecialchars($ins['nombres'] ?: 'N/A'); ?></td>
-                            <td><?php echo number_format($ins['cc'], 1); ?></td>
-                            <td><?php echo number_format($ins['mp'], 1); ?></td>
+                        <td><?php echo number_format($ins['cc'] ?: 0, 1); ?></td>
+                        <td><?php echo number_format($ins['mp'] ?: 0, 1); ?></td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

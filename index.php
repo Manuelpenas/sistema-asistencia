@@ -39,7 +39,7 @@ $notas_dist = $pdo->query("SELECT
         <div class="label">Cursos</div>
     </div>
     <div class="stat-card">
-        <div class="number"><?php echo number_format($stats['promedio'], 1); ?></div>
+        <div class="number"><?php echo number_format($stats['promedio'] ?: 0, 1); ?></div>
         <div class="label">Promedio General</div>
     </div>
     <div class="stat-card">
@@ -51,7 +51,7 @@ $notas_dist = $pdo->query("SELECT
         <div class="label">Proveedores</div>
     </div>
     <div class="stat-card">
-        <div class="number"><?php echo number_format($stats['promedio_proveedores'], 1); ?></div>
+        <div class="number"><?php echo number_format($stats['promedio_proveedores'] ?: 0, 1); ?></div>
         <div class="label">Promedio Proveedores</div>
     </div>
 </div>

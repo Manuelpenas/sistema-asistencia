@@ -45,9 +45,9 @@ $registros = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <td><?php echo htmlspecialchars($row['nombres']); ?></td>
                 <td><?php echo formatDate($row['fecha']); ?></td>
                 <td><?php echo htmlspecialchars($row['curso']); ?></td>
-                <td><?php echo number_format($row['cc'], 1); ?></td>
-                <td><?php echo number_format($row['mp'], 1); ?></td>
-                <td><strong><?php echo number_format($row['nota'], 1); ?></strong></td>
+                <td><?php echo number_format($row['cc'] ?: 0, 1); ?></td>
+                <td><?php echo number_format($row['mp'] ?: 0, 1); ?></td>
+                <td><strong><?php echo number_format($row['nota'] ?: 0, 1); ?></strong></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

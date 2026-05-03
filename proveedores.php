@@ -77,8 +77,8 @@ $total_proveedores = $pdo->query("SELECT COUNT(*) FROM proveedores")->fetchColum
                 <td><?php echo htmlspecialchars($p['linea']); ?></td>
                 <td><?php echo htmlspecialchars($p['curso']); ?></td>
                 <td><?php echo formatDate($p['fecha']); ?></td>
-                <td><?php echo number_format($p['tiempos'], 1); ?></td>
-                <td><strong><?php echo number_format($p['nota'], 1); ?></strong></td>
+                <td><?php echo number_format($p['tiempos'] ?: 0, 1); ?></td>
+                <td><strong><?php echo number_format($p['nota'] ?: 0, 1); ?></strong></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
