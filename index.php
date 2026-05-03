@@ -57,6 +57,39 @@ $notas_dist = $pdo->query("SELECT
 </div>
 
 <div class="card">
+    <h2>Calendario de Cursos</h2>
+    <p style="color:#666; font-size:14px; margin-bottom:15px;">Cursos programados por fecha</p>
+    <?php
+    $eventos = $pdo->query("SELECT curso, fecha, COUNT(*) as total FROM inscripciones GROUP BY curso, fecha ORDER BY fecha DESC LIMIT 30")->fetchAll(PDO::FETCH_ASSOC);
+    $cursos_por_fecha = [];
+    foreach ($eventos as $e) {
+        $fecha = $e['fecha'];
+        if (!isset($cursos_por_fecha[$fecha])) {
+            $cursos_por_fecha[$fecha] = [];
+        }
+        $cursos_por_fecha[$fecha][] = $e;
+    }
+    ?>
+    <?php if (count($cursos_por_fecha) > 0): ?>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:15px;">
+        <?php foreach ($cursos_por_fecha as $fecha => $items): ?>
+        <div style="background:#f1f8e9; padding:15px; border-radius:8px; border-left:4px solid #4caf50;">
+            <div style="font-weight:600; color:#1b5e20; margin-bottom:8px;"><?php echo formatDate($fecha); ?></div>
+            <?php foreach ($items as $item): ?>
+            <div style="font-size:14px; color:#333; padding:3px 0;">
+                <strong><??php echo htmlspecialchars($item['curso']); ?></strong>
+                <span style="color:#666; font-size:12px;">(<?php echo $item['total']; ?> inscritos)</span>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endforeach; ?>
+    </div>
+    <?php else: ?>
+    <p style="color:#666; text-align:center; padding:20px;">No hay cursos programados</p>
+    <?php endif; ?>
+</div>
+
+<div class="card">
     <h2>Distribución de Notas</h2>
     <div style="display:flex; gap:20px; margin:20px 0;">
         <div style="flex:1; text-align:center;">

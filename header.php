@@ -58,6 +58,7 @@
             <a href="index.php" <?php echo basename($_SERVER['PHP_SELF']) == 'index.php' ? 'class="active"' : ''; ?>>Dashboard</a>
             <a href="inscripcion.php" <?php echo basename($_SERVER['PHP_SELF']) == 'inscripcion.php' ? 'class="active"' : ''; ?>>Inscripción</a>
             <a href="asistencia.php" <?php echo basename($_SERVER['PHP_SELF']) == 'asistencia.php' ? 'class="active"' : ''; ?>>Asistencia</a>
+            <a href="cursos.php" <?php echo basename($_SERVER['PHP_SELF']) == 'cursos.php' ? 'class="active"' : ''; ?>>Cursos</a>
             <a href="proveedores.php" <?php echo basename($_SERVER['PHP_SELF']) == 'proveedores.php' ? 'class="active"' : ''; ?>>Proveedores</a>
             <a href="registros.php" <?php echo basename($_SERVER['PHP_SELF']) == 'registros.php' ? 'class="active"' : ''; ?>>Registros</a>
             <a href="consulta.php" <?php echo basename($_SERVER['PHP_SELF']) == 'consulta.php' ? 'class="active"' : ''; ?>>Consulta</a>
