@@ -77,7 +77,7 @@ $notas_dist = $pdo->query("SELECT
             <div style="font-weight:600; color:#1b5e20; margin-bottom:8px;"><?php echo formatDate($fecha); ?></div>
             <?php foreach ($items as $item): ?>
             <div style="font-size:14px; color:#333; padding:3px 0;">
-                <strong><??php echo htmlspecialchars($item['curso']); ?></strong>
+                <strong><?php echo htmlspecialchars($item['curso']); ?></strong>
                 <span style="color:#666; font-size:12px;">(<?php echo $item['total']; ?> inscritos)</span>
             </div>
             <?php endforeach; ?>
