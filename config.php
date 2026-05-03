@@ -147,6 +147,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
+    if (isset($_POST['upload_proveedores'])) {
+        if (isset($_FILES['proveedores_file']) && $_FILES['proveedores_file']['error'] == 0) {
+            $file = $_FILES['proveedores_file']['tmp_name'];
+            $ext = strtolower(pathinfo($_FILES['proveedores_file']['name'], PATHINFO_EXTENSION));
+            $count = 0;
+            $stmt = $pdo->prepare("INSERT OR IGNORE INTO proveedores (ruc, nombre, razon_social, linea, curso, fecha, tiempos, nota) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+
+            if ($ext === 'csv') {
+                if (($handle = fopen($file, "r")) !== FALSE) {
+                    $i = 0;
+                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                        $i++;
+                        if ($i == 1) continue;
+                        if (count($data) < 8) continue;
+                        $stmt->execute([$data[0], $data[1], $data[2], $data[3], $data[4], $data[5], $data[6], $data[7]]);
+                        $count++;
+                    }
+                    fclose($handle);
+                }
+                $success = "Se importaron $count proveedores correctamente";
+            } elseif (in_array($ext, ['xls', 'xlsx']) && class_exists('ZipArchive')) {
+                require_once 'SimpleXLSX.php';
+                $xlsx = SimpleXLSX::parse($file);
+                if ($xlsx) {
+                    foreach ($xlsx->rows() as $i => $row) {
+                        if ($i == 0) continue;
+                        if (count($row) < 8) continue;
+                        $stmt->execute([$row[0], $row[1], $row[2], $row[3], $row[4], $row[5], $row[6], $row[7]]);
+                        $count++;
+                    }
+                    $success = "Se importaron $count proveedores desde Excel correctamente";
+                }
+            }
+        }
+    }
+
     if (isset($_FILES['logo']) && $_FILES['logo']['error'] == 0) {
         $ext = pathinfo($_FILES['logo']['name'], PATHINFO_EXTENSION);
         if (in_array(strtolower($ext), ['png', 'jpg', 'jpeg', 'gif', 'svg'])) {
@@ -174,11 +210,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pdo->exec("TRUNCATE TABLE perfiles");
             $pdo->exec("TRUNCATE TABLE cursos");
             $pdo->exec("TRUNCATE TABLE inscripciones");
+            $pdo->exec("TRUNCATE TABLE proveedores");
         } else {
             $pdo->exec("DELETE FROM asistencias");
             $pdo->exec("DELETE FROM perfiles");
             $pdo->exec("DELETE FROM cursos");
             $pdo->exec("DELETE FROM inscripciones");
+            $pdo->exec("DELETE FROM proveedores");
         }
         $success = 'Todos los datos han sido eliminados';
     }
@@ -188,6 +226,7 @@ $total_registros = $pdo->query("SELECT COUNT(*) FROM asistencias")->fetchColumn(
 $total_perfiles = $pdo->query("SELECT COUNT(*) FROM perfiles")->fetchColumn();
 $total_cursos = $pdo->query("SELECT COUNT(*) FROM cursos")->fetchColumn();
 $total_inscripciones = $pdo->query("SELECT COUNT(*) FROM inscripciones")->fetchColumn();
+$total_proveedores = $pdo->query("SELECT COUNT(*) FROM proveedores")->fetchColumn();
 ?>
 <?php require 'header.php'; ?>
 
@@ -229,6 +268,15 @@ $total_inscripciones = $pdo->query("SELECT COUNT(*) FROM inscripciones")->fetchC
 </div>
 
 <div class="card">
+    <h2>Subir Proveedores (RUC | Nombre | Razon Social | Linea | Curso | Fecha | Tiempos | Nota)</h2>
+    <p style="color:#666; font-size:14px; margin-bottom:15px;">Cargue el archivo con los datos de proveedores</p>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="proveedores_file" accept=".csv,.xls,.xlsx" required>
+        <button type="submit" name="upload_proveedores" class="btn" style="margin-top:15px;">Cargar Proveedores</button>
+    </form>
+</div>
+
+<div class="card">
     <h2>Personalización</h2>
     <div style="display:grid; grid-template-columns:1fr 1fr; gap:30px;">
         <div>
@@ -263,7 +311,7 @@ $total_inscripciones = $pdo->query("SELECT COUNT(*) FROM inscripciones")->fetchC
 
 <div class="card">
     <h2>Gestión de Datos</h2>
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:15px;">
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:15px; margin-bottom:15px;">
         <div style="background:#e8f5e9; padding:15px; border-radius:8px; text-align:center;">
             <div style="font-size:24px; color:#1b5e20; font-weight:300;"><?php echo $total_registros; ?></div>
             <div style="font-size:12px; color:#555;">Asistencias</div>
@@ -279,6 +327,10 @@ $total_inscripciones = $pdo->query("SELECT COUNT(*) FROM inscripciones")->fetchC
         <div style="background:#f3e5f5; padding:15px; border-radius:8px; text-align:center;">
             <div style="font-size:24px; color:#6a1b9a; font-weight:300;"><?php echo $total_inscripciones; ?></div>
             <div style="font-size:12px; color:#555;">Inscripciones</div>
+        </div>
+        <div style="background:#fce4ec; padding:15px; border-radius:8px; text-align:center;">
+            <div style="font-size:24px; color:#c62828; font-weight:300;"><?php echo $total_proveedores; ?></div>
+            <div style="font-size:12px; color:#555;">Proveedores</div>
         </div>
     </div>
     <form method="POST" onsubmit="return confirmDelete('¿Está seguro de eliminar TODOS los datos? Esta acción no se puede deshacer.');">
